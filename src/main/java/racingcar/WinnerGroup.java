@@ -29,7 +29,7 @@ public class WinnerGroup {
         }
     }
 
-    public String printWinnerGroup() {
+    public String getWinnerGroupName() {
         StringBuilder winners = new StringBuilder();
 
         for (Car car : winnerGroup.getCarGroup()) {
@@ -38,5 +38,9 @@ public class WinnerGroup {
         }
 
         return winners.delete(winners.lastIndexOf(WINNER_SEPARATOR), winners.length() - 1).toString();
+    }
+
+    public String printFinalWinnerGroup() {
+        return "최종 우승자는 " + getWinnerGroupName() + "입니다.";
     }
 }
