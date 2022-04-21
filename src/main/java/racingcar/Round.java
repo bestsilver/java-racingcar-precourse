@@ -1,22 +1,26 @@
 package racingcar;
 
 public class Round {
-    int round;
+    private int round;
 
     public Round(String value) throws IllegalArgumentException {
         if (!checkRoundValidate(value)) {
-            throw new IllegalArgumentException("[ERROR] 시도 횟수는 숫자만 입렵할 수 있습니다.");
+            throw new IllegalArgumentException(IllegalArgumentException.NOT_NUMBER_ERROR_MSG);
         }
 
         round = Integer.parseInt(value);
     }
 
-    public boolean checkRoundValidate(String value) {
+    private boolean checkRoundValidate(String value) throws IllegalArgumentException {
         try {
             Integer.parseInt(value);
             return true;
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    public int getRound() {
+        return round;
     }
 }
