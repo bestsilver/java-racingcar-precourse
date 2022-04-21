@@ -40,16 +40,16 @@
 ### ✅ UserInputView
 - 유자가 입력한 값을 받아오는 기능
 
-### GameController
+### ✅ GameController
 - 전체 라운드를 레이싱하는 기능
 - 한번의 라운드를 레이싱하는 기능
 - 사용자에게 받은 시도 횟수 / 자동차 이름이 올바른 값인지 체크
   - 올바르지 않을 경우 ERROR를 출력한다
 
-### UserInputView
+### ✅ UserInputView
 - 사용자가 입력한 값을 가져오는 기능
 
-### IllegalArgumentException
+### ✅ IllegalArgumentException
 - 잘못된 인자가 들어왔을 경우 에러 throw
   - 자동차 이름은 1글자 이상, 5글자 이하이여한다.
   - 시도 횟수(Round)는 숫자여야 한다.
