@@ -33,4 +33,13 @@ public class CarGroup {
 
     public ArrayList<Car> getCarGroup() { return carGroup;}
 
+    public String printGroupByCarScore() {
+        StringBuilder scoreboard = new StringBuilder();
+        for (Car car: carGroup) {
+            scoreboard.append(car.printCarScore()).append("\n");
+        }
+
+        return scoreboard.toString();
+    }
+
 }
