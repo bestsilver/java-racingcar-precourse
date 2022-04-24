@@ -1,33 +1,41 @@
-package racingcar;
+package racingcar.controller;
+
+import racingcar.exception.IllegalArgumentException;
+import racingcar.model.*;
+import racingcar.view.Output;
+import racingcar.view.UserInputView;
 
 public class GameController {
     public static final String CAR_NAMES_INPUT_NOTICE_STR = "경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)";
     public static final String ROUND_INPUT_NOTICE_STR = "시도할 회수는 몇회인가요?";
     public static final String RESULT_NOTICE_STR = "실행 결과";
 
-    Round round;
-    CarGroup group;
+    private final Round round;
+    private final RacerGroup group;
+    private final Output output = new Output();
 
     public GameController() {
-        this.group = getValidCarGroup();
+        CarNames names = getValidCarNames();
         this.round = getValidRound();
+        this.group = new RacerGroup();
+
+        for (CarName name : names.getCarNames()) {
+            Racer racer = new Racer(new Car(name));
+            group.append(racer);
+        }
     }
 
     public void run() {
-        System.out.println(RESULT_NOTICE_STR);
-        for (int i=0; i< round.getRound(); i++) {
-            startOneGameRacing();
-            System.out.println(group.printGroupByCarScore());
+        output.showNotice(RESULT_NOTICE_STR);
+
+        while(!round.isFinished()) {
+            round.playRound();
+            group.runARace();
+            output.showNotice(group.toStringCarDistanceByRacer());
         }
 
         WinnerGroup winnerGroup = new WinnerGroup(group);
-        System.out.println(winnerGroup.printFinalWinnerGroup());
-    }
-
-    private void startOneGameRacing() {
-        for (Car car: group.getCarGroup()) {
-            car.decideMovement();
-        }
+        output.showNotice(winnerGroup.toStringFinalWinnerNames());
     }
 
     private Round getValidRound () {
@@ -35,7 +43,7 @@ public class GameController {
         String userInput;
 
         do {
-            System.out.println(ROUND_INPUT_NOTICE_STR);
+            output.showNotice(ROUND_INPUT_NOTICE_STR);
             userInput = UserInputView.getUserInput();
             isValid = checkRoundUserInput(userInput);
         } while (!isValid);
@@ -48,30 +56,30 @@ public class GameController {
             new Round(userinput);
             return true;
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            output.showError(e);
             return false;
         }
     }
 
-    private CarGroup getValidCarGroup() {
+    private CarNames getValidCarNames() {
         boolean isValid;
         String userInput;
 
         do {
-            System.out.println(CAR_NAMES_INPUT_NOTICE_STR);
+            output.showNotice(CAR_NAMES_INPUT_NOTICE_STR);
             userInput = UserInputView.getUserInput();
-            isValid = checkCarGroupUserInput(userInput);
+            isValid = checkCarNamesUserInput(userInput);
         } while (!isValid);
 
-        return new CarGroup(userInput);
+        return new CarNames(userInput);
     }
 
-    private boolean checkCarGroupUserInput (String userinput) {
+    private boolean checkCarNamesUserInput(String userinput) {
         try {
-            new CarGroup(userinput);
+            new CarNames(userinput);
             return true;
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            output.showError(e);
             return false;
         }
     }
